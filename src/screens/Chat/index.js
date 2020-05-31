@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { AppLoading, Asset, Linking } from 'expo';
+import Icon from 'react-native-vector-icons/Feather';
 import {
   Platform,
   KeyboardAvoidingView,
   SafeAreaView,
+  Text,
   View,
   TextInput,
 } from 'react-native';
@@ -69,13 +70,24 @@ import { Container } from './styles';
 // export default Chat;
 
 export default class Chat extends React.Component {
-  state = {
-    messages: [],
-    typingText: null,
-    isLoadingEarlier: false,
-    appIsReady: false,
-    isTyping: false,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      messages: [],
+      text: '',
+      isLoadingEarlier: false,
+      appIsReady: false,
+      isTyping: false,
+    };
+  }
+  // state = {
+  //   messages: [],
+  //   text: '',
+  //   isLoadingEarlier: false,
+  //   appIsReady: false,
+  //   isTyping: false,
+  // };
 
   get user() {
     return {
@@ -96,18 +108,73 @@ export default class Chat extends React.Component {
     Fire.off();
   }
 
+  renderInputToolbar(props, text) {
+    console.log(text);
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <TextInput
+          onChangeText={(text) => this.setState({ text: text })}
+          {...props}
+          // style={{
+          //   paddingHorizontal: 20,
+          //   fontSize: 16,
+          //   // backgroundColor: '#000',
+          //   height: 40,
+          //   borderRadius: 8,
+          //   marginHorizontal: 10,
+          // }}
+          // placeholderTextColor={'#3333'}
+        />
+        <TouchableOpacity
+          style={{ alignContent: 'center', alignItems: 'center' }}
+          {...props}
+          onPress={() =>
+            props.onSend({
+              text: text,
+              user: this.user,
+            })
+          }
+        >
+          <Icon name="send" size={30} style={{ margin: 5, color: 'blue' }} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  renderSend(props, text) {
+    // console.log(this.state.text.bind(this)  );
+    return (
+      <TouchableOpacity
+        style={{ alignContent: 'center', alignItems: 'center' }}
+        {...props}
+        onPress={() =>
+          props.onSend({
+            text: text,
+            user: this.user,
+          })
+        }
+      >
+        <Icon name="send" size={30} style={{ margin: 5, color: 'blue' }} />
+      </TouchableOpacity>
+    );
+  }
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <GiftedChat
           messages={this.state.messages}
           placeholder="Digite uma mensagem..."
-          onSend={Fire.send}
+          onSend={(message) => Fire.send(message)}
           user={this.user}
-          // messagesContainerStyle={{ backgroundColor: '#359081' }}
           scrollToBottom
           renderUsernameOnMessage
           renderAvatarOnTop
+          // onInputTextChanged={(text) => this.setState({ text: text })}
+          renderInputToolbar={(props) =>
+            this.renderInputToolbar(props, this.state.text)
+          }
+          // renderSend={(props) => this.renderSend(props, this.state.text)}
         />
       </SafeAreaView>
     );

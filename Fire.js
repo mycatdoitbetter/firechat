@@ -40,6 +40,7 @@ class Fire {
       this.db.push(message);
     });
   };
+
   parse = (message) => {
     const { user, text, timestamp } = message.val();
     const { key: _id } = message;
