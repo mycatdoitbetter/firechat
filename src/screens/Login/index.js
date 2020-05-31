@@ -1,17 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { Container, Circle } from './styles';
-
+import {
+  Container,
+  Circle,
+  ContainerInput,
+  Input,
+  Title,
+  ViewInput,
+  Form,
+  Button,
+  IconGo,
+} from './styles';
 
 function Login({ navigation }) {
+  const [name, setName] = useState('');
   return (
     <Container>
       <Circle />
-      <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
-        <Text>Hello World!</Text>
-      </TouchableOpacity>
+      <ContainerInput>
+        <Title>Usuário</Title>
+        <Form>
+          <ViewInput>
+            <Input
+              placeholder="Nome do usuário"
+              onChangeText={(text) => setName(text)}
+            />
+          </ViewInput>
+          <Button onPress={() => navigation.navigate('Chat', { name: name })}>
+            <IconGo name="chevron-right" size={40} />
+          </Button>
+        </Form>
+      </ContainerInput>
     </Container>
   );
 }
