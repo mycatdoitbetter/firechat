@@ -8,11 +8,11 @@ import {
   View,
   TextInput,
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { GiftedChat } from 'react-native-gifted-chat';
+
+import { GiftedChat, Send, InputToolbar } from 'react-native-gifted-chat';
 import Fire from '../../../Fire';
 
-import { Container } from './styles';
+import { ContainerInput, Input, SendButton, SendIcon } from './styles';
 
 // function Chat({ navigation, route }) {
 //   const [messages, setMessages] = useState([]);
@@ -70,24 +70,14 @@ import { Container } from './styles';
 // export default Chat;
 
 export default class Chat extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      messages: [],
-      text: '',
-      isLoadingEarlier: false,
-      appIsReady: false,
-      isTyping: false,
-    };
-  }
-  // state = {
-  //   messages: [],
-  //   text: '',
-  //   isLoadingEarlier: false,
-  //   appIsReady: false,
-  //   isTyping: false,
-  // };
+  state = {
+    messages: [],
+    height: 40,
+    text: '',
+    send: null,
+    appIsReady: false,
+    isTyping: false,
+  };
 
   get user() {
     return {
@@ -95,6 +85,8 @@ export default class Chat extends React.Component {
       name: this.props.route.params.name,
     };
   }
+
+  clearInput() {}
 
   componentDidMount() {
     Fire.get((message) =>
@@ -109,74 +101,104 @@ export default class Chat extends React.Component {
   }
 
   renderInputToolbar(props, text) {
-    console.log(text);
+    // console.log(props);
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <TextInput
+      <InputToolbar
+        {...props}
+        // primaryStyle={{ marginBottom: 20 }}
+        containerStyle={{
+          // justifyContent: 'center',
+          // alignItems: 'center',
+          marginHorizontal: 20,
+          backgroundColor: '#ddd',
+          borderRadius: 12,
+          borderWidth: 1,
+          borderColor: '#ddd',
+          // padding: 3,
+          marginBottom: 20,
+        }}
+      >
+        {/* <Input
+          onLayout={(event) => {
+            if (this.state.textInputHeight === 0) {
+              this.setState({ text: event.nativeEvent.layout.height });
+            }
+          }}
+          onContentSizeChange={(event) => {
+            this.setState({ text: event.nativeEvent.contentSize.height });
+          }}
+          {...props}
+          ref={(input) => {
+            this.textInput = input;
+          }}
           onChangeText={(text) => this.setState({ text: text })}
-          {...props}
-          // style={{
-          //   paddingHorizontal: 20,
-          //   fontSize: 16,
-          //   // backgroundColor: '#000',
-          //   height: 40,
-          //   borderRadius: 8,
-          //   marginHorizontal: 10,
-          // }}
-          // placeholderTextColor={'#3333'}
-        />
-        <TouchableOpacity
-          style={{ alignContent: 'center', alignItems: 'center' }}
-          {...props}
-          onPress={() =>
-            props.onSend({
-              text: text,
-              user: this.user,
-            })
-          }
-        >
-          <Icon name="send" size={30} style={{ margin: 5, color: 'blue' }} />
-        </TouchableOpacity>
-      </View>
+        /> */}
+      </InputToolbar>
     );
   }
 
   renderSend(props, text) {
-    // console.log(this.state.text.bind(this)  );
     return (
-      <TouchableOpacity
-        style={{ alignContent: 'center', alignItems: 'center' }}
+      <SendButton
         {...props}
-        onPress={() =>
+        onPress={() => {
           props.onSend({
             text: text,
             user: this.user,
-          })
-        }
+          });
+          this.textInput.clear();
+        }}
       >
-        <Icon name="send" size={30} style={{ margin: 5, color: 'blue' }} />
-      </TouchableOpacity>
+        <SendIcon name="send" />
+      </SendButton>
     );
   }
 
   render() {
+    function renderSend(props) {
+      return (
+        <Send {...props}>
+          <View
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              // backgroundColor: '#359081',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <SendIcon name="send" />
+          </View>
+        </Send>
+      );
+    }
+
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        style={{ height: '100%' }}
+        keyboardVerticalOffset={100}
+      >
         <GiftedChat
           messages={this.state.messages}
           placeholder="Digite uma mensagem..."
           onSend={(message) => Fire.send(message)}
+          messagesContainerStyle={{
+            height: '100%',
+            backgroundColor: '#359081',
+            paddingBottom: 50,
+          }}
           user={this.user}
           scrollToBottom
+          alwaysShowSend
           renderUsernameOnMessage
           renderAvatarOnTop
-          // onInputTextChanged={(text) => this.setState({ text: text })}
+          renderSend={(props) => renderSend(props)}
           renderInputToolbar={(props) =>
             this.renderInputToolbar(props, this.state.text)
           }
-          // renderSend={(props) => this.renderSend(props, this.state.text)}
         />
-      </SafeAreaView>
+      </KeyboardAvoidingView>
     );
   }
 }
