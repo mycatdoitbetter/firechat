@@ -25,7 +25,10 @@ export const Circle = styled.View`
 
 export const ContainerInput = styled.View`
   /* align-self: flex-start; */
-  /* justify-content: center; */
+  /* flex: 1; */
+  margin-top: 50px;
+  /* background-color: #333; */
+  justify-content: center;
   /* align-items: center; */
 `;
 
@@ -33,6 +36,7 @@ export const Title = styled.Text`
   font-size: 27px;
   font-weight: 700;
   color: #ffcd01;
+
   text-align: center;
 `;
 
@@ -57,9 +61,7 @@ export const Input = styled.TextInput.attrs({
 
 export const Form = styled.View`
   margin-top: 20px;
-  flex-direction: ${({ go }) => (go ? 'row' : 'column')};
-
-  /* flex-direction: column; */
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 `;
@@ -77,10 +79,36 @@ export const IconGo = styled(Icon)`
 `;
 
 export const IconView = styled.View`
-  width: ${({ screenWidth }) => screenWidth};
+  width: ${({ screenWidth }) => screenWidth}px;
   margin-top: -90px;
 
   position: absolute;
   top: 150px;
 `;
 export const IconImage = styled.Image``;
+
+export const GenerateButtonText = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
+  color: #f6f7f8;
+`;
+
+export const GenerateButton = styled(TouchableOpacity)`
+  justify-content: center;
+  align-items: center;
+
+  width: 300px;
+  height: 40px;
+  border-radius: 8px;
+  margin: 10px;
+  background-color: #ffcd01;
+  align-self: center;
+`;
+
+export const EnterButton = styled(TouchableOpacity)``;
+export const EnterButtonText = styled.Text`
+  color: #ffcd01;
+  align-self: center;
+  font-size: 17px;
+  font-weight: bold;
+`;
