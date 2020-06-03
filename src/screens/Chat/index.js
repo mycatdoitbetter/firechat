@@ -77,6 +77,7 @@ export default class Chat extends React.Component {
     send: null,
     appIsReady: false,
     isTyping: false,
+    chatId: this.props.route.params.chatId,
   };
 
   get user() {
@@ -86,36 +87,40 @@ export default class Chat extends React.Component {
     };
   }
 
-  clearInput() {}
-
   componentDidMount() {
-    Fire.get((message) =>
-      this.setState((previous) => ({
-        messages: GiftedChat.append(previous.messages, message),
-      }))
+    // Fire.chat('message');
+    // Fire.db(this.props.route.params.chatId);
+
+    Fire.get(
+      (message) =>
+        this.setState((previous) => ({
+          messages: GiftedChat.append(previous.messages, message),
+        })),
+      this.state.chatId
     );
   }
 
   componentWillUnmount() {
-    Fire.off();
+    Fire.off(this.state.chatId);
   }
 
   renderInputToolbar(props, text) {
-    // console.log(props);
     return (
       <InputToolbar
         {...props}
         // primaryStyle={{ marginBottom: 20 }}
+        primaryStyle={{ justifyContent: 'center', alignItems: 'center' }}
+        // accessoryStyle={{ marginBottom: 20 }}
         containerStyle={{
-          // justifyContent: 'center',
-          // alignItems: 'center',
+          justifyContent: 'center',
+          alignItems: 'center',
           marginHorizontal: 20,
-          backgroundColor: '#ddd',
+          // backgroundColor: '#ddd',
           borderRadius: 12,
-          borderWidth: 1,
-          borderColor: '#ddd',
-          // padding: 3,
-          marginBottom: 20,
+          // borderWidth: 0.5,
+          // borderColor: '#ddd',
+          padding: 3,
+          // marginBottom: 20,
         }}
       >
         {/* <Input
@@ -137,52 +142,29 @@ export default class Chat extends React.Component {
     );
   }
 
-  renderSend(props, text) {
-    return (
-      <SendButton
-        {...props}
-        onPress={() => {
-          props.onSend({
-            text: text,
-            user: this.user,
-          });
-          this.textInput.clear();
-        }}
-      >
-        <SendIcon name="send" />
-      </SendButton>
-    );
-  }
-
   render() {
     function renderSend(props) {
       return (
         <Send {...props}>
-          <View
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: 20,
-              // backgroundColor: '#359081',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <SendIcon name="send" />
-          </View>
+          <SendIcon name="send" />
         </Send>
       );
     }
 
     return (
       <KeyboardAvoidingView
-        style={{ height: '100%' }}
+        style={{
+          height: '100%',
+          paddingVertical: 20,
+          backgroundColor: '#359081',
+        }}
         keyboardVerticalOffset={100}
       >
         <GiftedChat
           messages={this.state.messages}
           placeholder="Digite uma mensagem..."
-          onSend={(message) => Fire.send(message)}
+          showAvatarForEveryMessage
+          onSend={(message) => Fire.send(message, this.state.chatId)}
           messagesContainerStyle={{
             height: '100%',
             backgroundColor: '#359081',

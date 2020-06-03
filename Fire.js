@@ -29,7 +29,7 @@ class Fire {
     });
   };
 
-  send = (messages) => {
+  send = (messages, id) => {
     messages.forEach((item) => {
       const message = {
         text: item.text,
@@ -37,7 +37,7 @@ class Fire {
         user: item.user,
       };
 
-      this.db.push(message);
+      firebase.database().ref(id).push(message);
     });
   };
 
@@ -54,18 +54,31 @@ class Fire {
     };
   };
 
-  get = (callback) => {
-    this.db.on('child_added', (snapshot) => callback(this.parse(snapshot)));
+  get = (callback, id) => {
+    firebase
+      .database()
+      .ref(id)
+      .on('child_added', (snapshot) => callback(this.parse(snapshot)));
   };
 
-  off() {
-    return this.db.off();
+  off(id) {
+    return firebase.database().ref(id).off();
   }
+
+  // db = (chatId) => {
+  //   // return firebase.database.ref('messages');
+  //   return firebase.database().ref(chatId);
+  // };
 
   get db() {
     // return firebase.database.ref('messages');
-    return firebase.database().ref('messages');
+    // return firebase.database().ref('messages');
   }
+
+  // chat(id) {
+  //   // return firebase.database.ref('messages');
+  //   return firebase.database().ref(id);
+  // }
 
   get uid() {
     return (firebase.auth().currentUser || {}).uid;
