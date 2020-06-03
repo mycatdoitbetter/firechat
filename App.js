@@ -10,7 +10,7 @@ import Generate from './src/screens/Generate';
 import Chat from './src/screens/Chat';
 
 const Stack = createStackNavigator();
-
+console.disableYellowBox = true;
 function StackNavigation() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

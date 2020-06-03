@@ -8,7 +8,7 @@
     "icon": "./assets/firechat_noback.png",
     "splash": {
       "image": "./assets/name_logo_noback.png",
-      "resizeMode": "native",
+
       "backgroundColor": "#06212a"
     },
     "updates": {
