@@ -30,17 +30,16 @@
   </tr>
  </table>
 
- <p align="center">
+To init this application, clone the projetct and you can start the expo bundle with:
 
-  <img  width="200" src="demo/logo-built_black.png">
-</p>
- To init this application,you can install your real device or in a emulator, doing:
- ```bash
- cd hermes-mobile
- yarn
- yarn android
- ```
-In some cases, the bundle will not start, so, do you have to init with:
+``
+
 ```bash
+cd firechat
 yarn start
 ```
+
+ <p align="center">
+
+  <img  width="300" src="demo/logo-built_black.png">
+</p>
