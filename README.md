@@ -14,9 +14,9 @@
 
 </p>
 
-<table border="0" align="center"> 
- 
-  <tr align="center">
+<div align="center">
+<table border="0" > 
+  <tr>
      <td>
        <p>
         <img src="demo/demo.gif">
@@ -29,10 +29,12 @@
      </td>
   </tr>
  </table>
+</div>
+
 
 To init this application, clone the projetct and you can start the expo bundle with:
 
-``
+
 
 ```bash
 cd firechat
